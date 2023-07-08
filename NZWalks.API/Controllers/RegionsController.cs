@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NZWalks.API.Data;
 using NZWalks.API.Models.Domain;
+using NZWalks.API.Models.DTO;
 
 namespace NZWalks.API.Controllers
 {
@@ -20,8 +21,21 @@ namespace NZWalks.API.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var regions = _context.Regions.ToList();
-            return Ok(regions);
+            //get data from database --domain models
+            var regionsDomain = _context.Regions.ToList();
+            //Map Domain models to DTOs
+            var regionsDto = new List<RegionDto>();
+            foreach (var regionDomain in regionsDomain)
+            {
+                regionsDto.Add(new RegionDto
+                {
+                    Id = regionDomain.Id,
+                    Name = regionDomain.Name,
+                    Code = regionDomain.Code,
+                    RegionImageUrl = regionDomain.RegionImageUrl
+                });
+            }
+            return Ok(regionsDto);
         }
 
         [HttpGet]
@@ -29,12 +43,23 @@ namespace NZWalks.API.Controllers
         public IActionResult GetById([FromRoute] Guid id)
         {
             //var region = _context.Regions.Find(id);
-            var region = _context.Regions.FirstOrDefault(r => r.Id == id);
-            if (region == null)
+            //get region domain model from database
+            var regionDomain = _context.Regions.FirstOrDefault(r => r.Id == id);
+            //
+            if (regionDomain == null)
             {
                 return NotFound();
             }
-            return Ok(region);
+            //convert region domain model to region dto
+            var regionDto = new RegionDto
+            {
+                Id = regionDomain.Id,
+                Name = regionDomain.Name,
+                Code = regionDomain.Code,
+                RegionImageUrl = regionDomain.RegionImageUrl
+            };
+
+            return Ok(regionDto);
         }
     }
 }
