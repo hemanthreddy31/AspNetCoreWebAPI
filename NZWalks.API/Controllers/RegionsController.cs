@@ -84,22 +84,41 @@ namespace NZWalks.API.Controllers
             };
             return CreatedAtAction(nameof(GetById), new { Id = regionDto.Id },regionDto);
         }
+
+        //put method
+        [HttpPut]
+        [Route("{id:Guid}")]
+        public IActionResult Update([FromRoute] Guid id, [FromBody] UpdateRegionRequestDto updateregionrequestdto )
+        {
+            //check if region exist
+            var regionDomianModel= _context.Regions.FirstOrDefault(x => x.Id == id);
+            if (regionDomianModel == null)
+            {
+                return NotFound();
+            }
+            //Map DTO to Domain Model
+            regionDomianModel.Code = updateregionrequestdto.Code;
+            regionDomianModel.Name = updateregionrequestdto.Name;
+            regionDomianModel.RegionImageUrl=updateregionrequestdto.RegionImageUrl;
+            _context.SaveChanges();
+
+
+            //convert domain model to dto
+            var regionDto = new RegionDto
+            {
+                Id = regionDomianModel.Id,
+                Code = regionDomianModel.Code,
+                Name = regionDomianModel.Name,
+                RegionImageUrl = regionDomianModel.RegionImageUrl
+            };
+            return Ok(regionDto);
+
+
+
+
+
+        }
+       
     }
 }
-/* var regions = new List<Region>
-            {
-                new Region
-                {
-                    Id=Guid.NewGuid(),
-                    Name="Hyderabad",
-                    Code="Hyd",
-                    RegionImageUrl="https://www.holidify.com/images/bgImages/HYDERABAD.jpg"
-                },
-                  new Region
-                {
-                    Id=Guid.NewGuid(),
-                    Name="Karimnagar",
-                    Code="Knr",
-                    RegionImageUrl="https://www.holidify.com/images/bgImages/HYDERABAD.jpg"
-                }
-            };*/
+ 
