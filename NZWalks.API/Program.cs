@@ -13,7 +13,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<NZWalksDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("NZWalksConnectionString")));
 //dependency injection scoped lifetime 
-builder.Services.AddScoped<IRegionRepository,SQLRegionRepository>();
+builder.Services.AddScoped<IRegionRepository,InMemoryRegionRepository>();
 
 var app = builder.Build();
 
