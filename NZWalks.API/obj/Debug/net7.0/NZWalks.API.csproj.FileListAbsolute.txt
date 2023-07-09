@@ -74,3 +74,5 @@ C:\Dotnet\core\corewebapi\NZwalks\NZWalks\NZWalks.API\obj\Debug\net7.0\refint\NZ
 C:\Dotnet\core\corewebapi\NZwalks\NZWalks\NZWalks.API\obj\Debug\net7.0\NZWalks.API.pdb
 C:\Dotnet\core\corewebapi\NZwalks\NZWalks\NZWalks.API\obj\Debug\net7.0\NZWalks.API.genruntimeconfig.cache
 C:\Dotnet\core\corewebapi\NZwalks\NZWalks\NZWalks.API\obj\Debug\net7.0\ref\NZWalks.API.dll
+C:\Dotnet\core\corewebapi\NZwalks\NZWalks\NZWalks.API\bin\Debug\net7.0\AutoMapper.dll
+C:\Dotnet\core\corewebapi\NZwalks\NZWalks\NZWalks.API\bin\Debug\net7.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
