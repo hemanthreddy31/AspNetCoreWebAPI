@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NZWalks.API.Models.Domain;
-using NZWalks.API.Models.DTO;
+using NZWalks.API.Models.DTO.Walk;
 using NZWalks.API.Repository;
 
 namespace NZWalks.API.Controllers
@@ -57,6 +57,38 @@ namespace NZWalks.API.Controllers
             }
             return Ok(_mapper.Map<WalkDto>(walkDomainModel));
 
+        }
+
+
+        //update walk by ID
+        //Put:/api/walks/{id}
+        [HttpPut]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateWalkRequestDto updateWalkRequestDto)
+        {
+            //Map DTO to Domain Model
+            var walkDomainModel=_mapper.Map<Walk>(updateWalkRequestDto);
+           walkDomainModel= await _walkRepository.UpdateAsync(id, walkDomainModel);
+            if(walkDomainModel == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<WalkDto>(walkDomainModel));
+        }
+
+        //Delete a walk By Id
+        //Delete: /api/walks/{id}
+        [HttpDelete]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        {
+            var deletedWalkDomainModel=await _walkRepository.DeleteAsync(id);
+            if (deletedWalkDomainModel == null)
+            {
+                return NotFound();
+            }
+            //Map Domain Model to DTO
+            return Ok(_mapper.Map<WalkDto>(deletedWalkDomainModel));
         }
     }
 }

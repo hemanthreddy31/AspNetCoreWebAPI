@@ -1,6 +1,6 @@
-﻿namespace NZWalks.API.Models.DTO
+﻿namespace NZWalks.API.Models.DTO.Walk
 {
-    public class AddWalkRequestDto
+    public class UpdateWalkRequestDto
     {
         public string Name { get; set; }
         public string Description { get; set; }
