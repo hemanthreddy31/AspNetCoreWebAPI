@@ -40,11 +40,12 @@ namespace NZWalks.API.Controllers
         }
 
         //Getall
+        //Get:/api/walks?filterOn=Name&filterQuery=Track
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] string? filterQuery)
         {
-            var walkDomainModel = await _walkRepository.GetAllAsync();
+            var walkDomainModel = await _walkRepository.GetAllAsync(filterOn,filterQuery);
             return Ok(_mapper.Map<List<WalkDto>>(walkDomainModel));
         }
 
@@ -69,6 +70,7 @@ namespace NZWalks.API.Controllers
         //Put:/api/walks/{id}
         [HttpPut]
         [Route("{id:Guid}")]
+        [ValidateModel]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateWalkRequestDto updateWalkRequestDto)
         {
             //Map DTO to Domain Model
