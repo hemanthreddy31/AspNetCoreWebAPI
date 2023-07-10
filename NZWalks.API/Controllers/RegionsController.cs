@@ -58,30 +58,25 @@ namespace NZWalks.API.Controllers
 
         //post method
         [HttpPost]
-        public async  Task<IActionResult> Create([FromBody] AddRegionRequestDto addregionrequestdto)
+        public async Task<IActionResult> Create([FromBody] AddRegionRequestDto addregionrequestdto)
         {
+            if (ModelState.IsValid)
+            {
+                //map or convert dto to domain model
 
-            //map or convert dto to domain model
-            /*   var regionDomainModel = new Region
-               {
-                   Code = addregionrequestdto.Code,
-                   Name = addregionrequestdto.Name,
-                   RegionImageUrl = addregionrequestdto.RegionImageUrl
-               };*/
-            var regionDomainModel = _mapper.Map<Region>(addregionrequestdto);
+                var regionDomainModel = _mapper.Map<Region>(addregionrequestdto);
 
-            regionDomainModel = await _regionrepository.CreateAsync(regionDomainModel);
+                regionDomainModel = await _regionrepository.CreateAsync(regionDomainModel);
 
-            //Map Domain model to Dto
-            /*     var regionDto = new RegionDto
-                 {
-                     Id = regionDomainModel.Id,
-                     Code = regionDomainModel.Code,
-                     Name = regionDomainModel.Name,
-                     RegionImageUrl = regionDomainModel.RegionImageUrl
-                 };*/
-            var regionDto = _mapper.Map<RegionDto>(regionDomainModel);
-            return CreatedAtAction(nameof(GetById), new { Id = regionDto.Id },regionDto);
+                //Map Domain model to Dto
+
+                var regionDto = _mapper.Map<RegionDto>(regionDomainModel);
+                return CreatedAtAction(nameof(GetById), new { Id = regionDto.Id }, regionDto);
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
         }
 
         //put method
