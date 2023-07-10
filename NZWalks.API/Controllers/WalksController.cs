@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NZWalks.API.CustomActionFilters;
 using NZWalks.API.Models.Domain;
 using NZWalks.API.Models.DTO.Walk;
 using NZWalks.API.Repository;
@@ -22,14 +23,18 @@ namespace NZWalks.API.Controllers
         //create walks
         //POST/api/walks
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> Create([FromBody] AddWalkRequestDto addWalkRequestDto)
         {
-            //Map dto to domain model
-            var walkDomainModel = _mapper.Map<Walk>(addWalkRequestDto);
-            await _walkRepository.CreateAsync(walkDomainModel);
-            //map domain model to dto
+             
+                //Map dto to domain model
+                var walkDomainModel = _mapper.Map<Walk>(addWalkRequestDto);
+                await _walkRepository.CreateAsync(walkDomainModel);
+                //map domain model to dto
 
-            return Ok(_mapper.Map<WalkDto>(walkDomainModel));
+                return Ok(_mapper.Map<WalkDto>(walkDomainModel));
+            
+
 
             
         }
