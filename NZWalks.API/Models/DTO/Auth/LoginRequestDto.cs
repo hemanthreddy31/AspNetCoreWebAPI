@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace NZWalks.API.Models.DTO
+namespace NZWalks.API.Models.DTO.Auth
 {
     public class LoginRequestDto
     {

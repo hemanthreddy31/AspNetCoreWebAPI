@@ -6,6 +6,7 @@ using NZWalks.API.Repository;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
+using NZWalks.API.Models.DTO.Auth;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,8 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("NZWalksAuthConne
 //dependency injection scoped lifetime 
 builder.Services.AddScoped<IRegionRepository,SQLRegionRepository>();
 builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>();
+//adding  token repository
+builder.Services.AddScoped<ITokenRepository,TokenRepository>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 //add identitiy solution
 builder.Services.AddIdentityCore<IdentityUser>()
