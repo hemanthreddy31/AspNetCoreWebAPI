@@ -8,6 +8,7 @@ using NZWalks.API.Data;
 using NZWalks.API.Models.Domain;
 using NZWalks.API.Models.DTO.Region;
 using NZWalks.API.Repository;
+using System.Text.Json;
 
 namespace NZWalks.API.Controllers
 {
@@ -19,12 +20,14 @@ namespace NZWalks.API.Controllers
         private readonly NZWalksDbContext _context;
         private readonly IRegionRepository _regionrepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<RegionsController> _logger;
 
-        public RegionsController(NZWalksDbContext context, IRegionRepository regionrepository, IMapper mapper)
+        public RegionsController(NZWalksDbContext context, IRegionRepository regionrepository, IMapper mapper, ILogger<RegionsController> logger)
         {
             this._context = context;
             this._regionrepository = regionrepository;
             this._mapper = mapper;
+            this._logger = logger;
         }
 
 
@@ -33,12 +36,27 @@ namespace NZWalks.API.Controllers
         //[Authorize(Roles ="Reader")]
         public async Task<IActionResult> GetAll()
         {
-            //get data from database --domain models
-            var regionsDomain = await _regionrepository.GetAllAsync();
+            /* _logger.LogInformation("GetAll action  method was invoked");
+             _logger.LogWarning("This is a warning log");
+             _logger.LogError("This is a error log");*/
+            try
+            {
+                throw new Exception("This is a custom excepiton");
+                //get data from database --domain models
+                var regionsDomain = await _regionrepository.GetAllAsync();
+
+                _logger.LogInformation($"finished GetAllRegions Request with data: {JsonSerializer.Serialize(regionsDomain)}");
+
+                //map domain models to DTOs
+                var regionsDto = _mapper.Map<List<RegionDto>>(regionsDomain);
+                return Ok(regionsDto);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                throw;
+            }
       
-            //map domain models to DTOs
-            var regionsDto = _mapper.Map<List<RegionDto>>(regionsDomain);
-            return Ok(regionsDto);
         }
 
         [HttpGet]
