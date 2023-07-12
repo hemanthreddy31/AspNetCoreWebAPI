@@ -14,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -55,6 +56,8 @@ builder.Services.AddScoped<IRegionRepository,SQLRegionRepository>();
 builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>();
 //adding  token repository
 builder.Services.AddScoped<ITokenRepository,TokenRepository>();
+//addding Image repository
+builder.Services.AddScoped<IImageRepository,LocalImageRepository>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 //add identitiy solution
 builder.Services.AddIdentityCore<IdentityUser>()
